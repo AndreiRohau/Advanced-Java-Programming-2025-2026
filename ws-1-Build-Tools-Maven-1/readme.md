@@ -19,3 +19,22 @@ cd ./target
 ```commandline
 java -jar my-app-1.0-SNAPSHOT.jar
 ```
+
+```commandline
+mvn compile
+```
+```commandline
+mvn test-compile
+```
+```commandline
+mvn clean
+```
+```commandline
+mvn test
+```
+```commandline
+mvn package
+```
+```commandline
+mvn install
+```
