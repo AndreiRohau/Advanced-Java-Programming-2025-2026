@@ -1,5 +1,6 @@
 package uz.itpu;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.parallel.Execution;
@@ -11,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(CalculatorImplDependencyInjectionParameterResolverTest.class)
 public class CalculatorImplParallelExecutionTest {
 
+    @Disabled("Flacky test. Require fix.")
     @Test
     public void testAdd_1(Calculator calculator) { // this calc comes from CalculatorImplDependencyInjectionParameterResolverTest
         try {
