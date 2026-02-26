@@ -52,6 +52,7 @@ public class UserServiceImplTest {
         // Arrange
         doNothing().when(userServiceValidator).validate(testUser);
         when(userRepository.save(testUser)).thenReturn(EXPECTED_USER_ID);
+        when(userRepository.getUserByEmail(testUser.getEmail())).thenReturn(null);
 
         // Act
         Long actualUserId = userService.saveUser(testUser);
@@ -60,6 +61,7 @@ public class UserServiceImplTest {
         assertNotNull(actualUserId, "User ID should not be null");
         assertEquals(EXPECTED_USER_ID, actualUserId, "Returned user ID should match expected value");
         verify(userServiceValidator, times(1)).validate(testUser);
+        verify(userRepository, times(1)).getUserByEmail(testUser.getEmail());
         verify(userRepository, times(1)).save(testUser);
 
         var inOrder = inOrder(userServiceValidator, userRepository);

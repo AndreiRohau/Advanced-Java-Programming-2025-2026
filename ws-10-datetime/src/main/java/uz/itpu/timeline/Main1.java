@@ -1,7 +1,6 @@
 package uz.itpu.timeline;
 
-import java.time.LocalDate;
-import java.time.Month;
+import java.time.*;
 
 public class Main1 {
     public static void main(String[] args) {
@@ -15,30 +14,33 @@ public class Main1 {
         System.out.println(ld3);
 
         //invalid date
-        //LocalDate invalidDate = LocalDate.of(2022, 13, 1);
+//        LocalDate invalidDate = LocalDate.of(2022, 13, 1);
 
         //times
-//        LocalTime lt1 = LocalTime.now();
-//        LocalTime lt2 = LocalTime.of(10, 5);
-//
-//        System.out.println(lt1);
-//        System.out.println(lt2);
+        LocalTime lt1 = LocalTime.now();
+        LocalTime lt2 = LocalTime.of(10, 5, 45, 123321);
+
+        System.out.println(lt1);
+        System.out.println(lt2);
 
         // datetime
-//        LocalDateTime ldt1 = LocalDateTime.now();
-//        LocalDateTime ldt2 = LocalDateTime.of(2022, 2, 1, 2, 3);
-//        LocalDateTime ldt3 = LocalDateTime.of(ld1, lt1);
+        LocalDateTime ldt1 = LocalDateTime.now();
+        LocalDateTime ldt2 = LocalDateTime.of(2022, 2, 1, 2, 3);
+        LocalDateTime ldt3 = LocalDateTime.of(ld1, lt1);
 
-//        System.out.println(ldt1);
-//        System.out.println(ldt2);
-//        System.out.println(ldt3);
+        System.out.println(ldt1);
+        System.out.println(ldt2);
+        System.out.println(ldt3);
 
         //monthday
-//        MonthDay monthDay = MonthDay.of(7, 8);
-//        LocalDate newLocalDate = monthDay.atYear(2022);
+        MonthDay monthDay = MonthDay.of(7, 8);
+        LocalDate newLocalDate = monthDay.atYear(2022);
+
+        System.out.println(monthDay);
+        System.out.println(newLocalDate);
 
         //yearmonth
-//        YearMonth yearMonth = YearMonth.now();
-//        LocalDate yearMonthLocalDate = yearMonth.atDay(8);
+        YearMonth yearMonth = YearMonth.now();
+        LocalDate yearMonthLocalDate = yearMonth.atDay(8);
     }
 }
