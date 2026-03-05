@@ -1,0 +1,43 @@
+-- =============================================================
+--  JDBC Demo – initial schema & seed data
+--  Runs automatically when the container starts for the first time
+-- =============================================================
+
+-- ---------------------------------------------------------------
+-- Schema
+-- ---------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS departments (
+    id          SERIAL PRIMARY KEY,
+    name        VARCHAR(100) NOT NULL UNIQUE,
+    location    VARCHAR(100)
+);
+
+CREATE TABLE IF NOT EXISTS employees (
+    id            SERIAL PRIMARY KEY,
+    first_name    VARCHAR(50)  NOT NULL,
+    last_name     VARCHAR(50)  NOT NULL,
+    email         VARCHAR(120) NOT NULL UNIQUE,
+    salary        NUMERIC(10,2),
+    hire_date     DATE         NOT NULL DEFAULT CURRENT_DATE,
+    department_id INTEGER REFERENCES departments(id) ON DELETE SET NULL
+);
+
+-- ---------------------------------------------------------------
+-- Seed data
+-- ---------------------------------------------------------------
+INSERT INTO departments (name, location) VALUES
+    ('Engineering',  'Tashkent'),
+    ('Marketing',    'Samarkand'),
+    ('HR',           'Tashkent'),
+    ('Finance',      'Bukhara');
+
+INSERT INTO employees (first_name, last_name, email, salary, hire_date, department_id) VALUES
+    ('Alice',  'Smith',   'alice.smith@itpu.uz',   75000.00, '2022-03-15', 1),
+    ('Bob',    'Johnson', 'bob.johnson@itpu.uz',   62000.00, '2021-07-01', 1),
+    ('Carol',  'White',   'carol.white@itpu.uz',   55000.00, '2023-01-10', 2),
+    ('David',  'Brown',   'david.brown@itpu.uz',   48000.00, '2020-11-20', 3),
+    ('Eva',    'Davis',   'eva.davis@itpu.uz',     91000.00, '2019-05-05', 1),
+    ('Frank',  'Wilson',  'frank.wilson@itpu.uz',  67000.00, '2022-09-30', 4),
+    ('Grace',  'Lee',     'grace.lee@itpu.uz',     53000.00, '2023-06-14', 2),
+    ('Henry',  'Taylor',  'henry.taylor@itpu.uz',  44000.00, '2024-01-02', NULL);
+

@@ -2,7 +2,7 @@ package uz.itpu;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Introduction to JDBC");
-        System.out.println("Creating Database Queries Using Statement Objects");
+        System.out.println("=== ws-12: Introduction to JDBC ===");
+        System.out.println("\n=== ws-12: CRUD with Statement / PreparedStatement ===");
     }
 }

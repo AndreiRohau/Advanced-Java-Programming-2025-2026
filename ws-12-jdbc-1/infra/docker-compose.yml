@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: jdbc-demo-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: jdbc_demo
+      POSTGRES_USER: jdbc_user
+      POSTGRES_PASSWORD: jdbc_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d   # auto-run SQL on first start
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U jdbc_user -d jdbc_demo"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+
