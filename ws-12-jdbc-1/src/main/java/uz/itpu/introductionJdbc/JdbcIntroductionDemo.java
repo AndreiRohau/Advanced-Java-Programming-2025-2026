@@ -11,6 +11,7 @@ public class JdbcIntroductionDemo {
         demo.showDatabaseMetadata();
         demo.listAllDepartments();
         demo.listAllEmployees();
+        demo.listAllUsers(); // will fail if 'users' table doesn't exist
     }
 
     /**
@@ -87,6 +88,26 @@ public class JdbcIntroductionDemo {
                 System.out.printf("  [%d] %-20s | %-30s | salary=%-10s | hired=%s | deptId=%s%n",
                         e.id(), e.fullName(), e.email(),
                         e.salary(), e.hireDate(), e.departmentId()));
+    }
+
+    private void listAllUsers() {
+        String sql = "SELECT id, name, email FROM users ORDER BY id";
+        try (Connection con = DbConfig.getInstance().getConnection();
+             Statement st = con.createStatement();
+             ResultSet rs = st.executeQuery(sql)) {
+
+            int count = 0;
+            System.out.println("─── users ───────────────────────────────");
+            while (rs.next()) {
+                System.out.printf("  [%d] %-20s %s%n",
+                        rs.getInt("id"), rs.getString("name"), rs.getString("email"));
+                count++;
+            }
+            System.out.println("─────────────────────────────────────────");
+        } catch (SQLException e) {
+            System.err.println("Failed to list users: " + e.getMessage());
+        }
+        System.out.println("✔ all users retrieved");
     }
 
     // ------------------------------------------------------------------
