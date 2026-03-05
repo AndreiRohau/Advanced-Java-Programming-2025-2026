@@ -51,6 +51,7 @@ public final class DbConfig {
      * @throws SQLException if the connection cannot be established
      */
     public Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(url, user, password);
+        Connection connection = DriverManager.getConnection(url, user, password);
+        return connection;
     }
 }

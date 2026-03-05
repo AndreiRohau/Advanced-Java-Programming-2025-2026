@@ -51,7 +51,6 @@ public class JdbcIntroductionDemo {
                         rs.getString("name"),
                         rs.getString("location"));
             }
-
         } catch (SQLException e) {
             System.err.println("Failed to list departments: " + e.getMessage());
         }

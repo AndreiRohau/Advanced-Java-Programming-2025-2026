@@ -18,30 +18,31 @@ public class JdbcExample {
     public static void main(String[] args)
             throws SQLException, ClassNotFoundException {
 
-        fisrtOption();
+//        firstOption();
         secondOption();
     }
 
-    private static void fisrtOption() throws SQLException, ClassNotFoundException {
-        Connection con = null;
-        Statement st = null;
-        ResultSet rs = null;
+    private static void firstOption() throws SQLException, ClassNotFoundException {
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
 
         try {
             // Registering a Driver (optional, for old versions of JDBC).
-            Class.forName("org.gjt.mm.mysql.Driver");
+            Class.forName("org.postgresql.Driver");
+            // or
+//            DriverManager.registerDriver(new org.postgresql.Driver());
 
             // Open a connection.
-            con = DriverManager.getConnection("jdbc:mysql://127.0.0.1/db-example-01?useSSL=false", "root", "pass123");
+            connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/jdbc_demo", "jdbc_user", "jdbc_pass");
             // Create an object to send requests
-            st = con.createStatement();
-
+            statement = connection.createStatement();
             // Execute a query.
-            rs = st.executeQuery("SELECT * FROM users");
+            resultSet = statement.executeQuery("SELECT * FROM employees");
 
             // Extract data from result set.
-            while (rs.next()) {
-                System.out.println(rs.getInt(1) + " - " + rs.getString(2));
+            while (resultSet.next()) {
+                System.out.println(resultSet.getInt(1) + " - " + resultSet.getString(2));
             }
         } catch (SQLException e) {
             // Handle any errors.
@@ -50,27 +51,27 @@ public class JdbcExample {
             // Handle any errors.
             throw e; // as an example
         } finally {
-            if (rs != null) {
+            if (resultSet != null) {
                 try {
-                    rs.close();
+                    resultSet.close();
                 } catch (SQLException e) {
                     // Handle any errors.
                     throw e; // as an example
                 }
             }
 
-            if (st != null) {
+            if (statement != null) {
                 try {
-                    st.close();
+                    statement.close();
                 } catch (SQLException e) {
                     // Handle any errors.
                     throw e; // as an example
                 }
             }
 
-            if (con != null) {
+            if (connection != null) {
                 try {
-                    con.close();
+                    connection.close();
                 } catch (SQLException e) {
                     // Handle any errors.
                     throw e; // as an example
@@ -80,10 +81,9 @@ public class JdbcExample {
     }
 
     private static void secondOption() throws SQLException, ClassNotFoundException {
-        try (Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1/db-example-01?useSSL=false",
-                "root", "pass123");
+        try (Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/jdbc_demo", "jdbc_user", "jdbc_pass");
              Statement st = con.createStatement();
-             ResultSet rs = st.executeQuery("SELECT * FROM users")) {
+             ResultSet rs = st.executeQuery("SELECT * FROM employees")) {
 
             while (rs.next()) {
                 System.out.println(rs.getInt(1) + " - " + rs.getString(2));
