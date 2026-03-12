@@ -1,10 +1,13 @@
 package uz.itpu.introExample;
 
+import uz.itpu.introductionJdbc.Employee;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 /**
  * Since the java.sql.Connection, java.sql.Statement, java.sql.PreparedStatement, java.sql.CallableStatement,
@@ -81,16 +84,37 @@ public class JdbcExample {
     }
 
     private static void secondOption() throws SQLException, ClassNotFoundException {
+        var employees = new ArrayList<Employee>();
         try (Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/jdbc_demo", "jdbc_user", "jdbc_pass");
              Statement st = con.createStatement();
              ResultSet rs = st.executeQuery("SELECT * FROM employees")) {
 
+//            while (rs.next()) {
+//                System.out.println(rs.getInt(1) + " - " + rs.getString(2));
+//            }
+
             while (rs.next()) {
-                System.out.println(rs.getInt(1) + " - " + rs.getString(2));
+                employees.add(mapEmployee(rs));
             }
         } catch (SQLException e) {
             // Handle any errors.
             throw e; // as an example
         }
+        for (Employee employee : employees) {
+            System.out.println(employee);
+        }
+    }
+
+    private static Employee mapEmployee(ResultSet rs) throws SQLException {
+        var deptId = rs.getObject("department_id");
+        return new Employee(
+                rs.getInt("id"),
+                rs.getString("first_name"),
+                rs.getString("last_name"),
+                rs.getString("email"),
+                rs.getBigDecimal("salary"),
+                rs.getDate("hire_date").toLocalDate(),
+                deptId != null ? (Integer) deptId : null
+        );
     }
 }

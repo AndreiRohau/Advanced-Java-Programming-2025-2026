@@ -40,6 +40,7 @@ public class DirtyReadDemo {
         System.out.println("======================================================");
 
         try (Connection conn = TransactionHelper.openConnection()) {
+//            conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
             conn.setAutoCommit(false);
 
             double originalSalary = TransactionHelper.readSalary(conn, TransactionHelper.TARGET_EMPLOYEE_ID);
