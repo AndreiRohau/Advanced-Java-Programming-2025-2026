@@ -16,9 +16,14 @@ import java.util.concurrent.CountDownLatch;
  * </ol>
  *
  * <p>Without isolation ({@code applyIsolation = false}):
- * Reader uses {@code REPEATABLE_READ} → the new row appears in the second count (phantom).<br>
+ * Reader uses {@code READ_COMMITTED} → the new row appears in the second count (phantom).<br>
  * With isolation ({@code applyIsolation = true}):
  * Reader uses {@code SERIALIZABLE} → both counts return the same value.
+ *
+ * <p><b>PostgreSQL note:</b> PostgreSQL's {@code REPEATABLE_READ} already prevents phantom
+ * reads (it uses snapshot isolation, which is stricter than the SQL standard requires).
+ * Therefore {@code READ_COMMITTED} is used as the unprotected level here so the anomaly
+ * is actually observable.
  */
 public class PhantomReadDemo {
 
@@ -28,7 +33,7 @@ public class PhantomReadDemo {
      * Runs the phantom-read demo.
      *
      * @param applyIsolation {@code true} to use SERIALIZABLE (prevents the anomaly);
-     *                       {@code false} to use REPEATABLE_READ (allows phantom reads)
+     *                       {@code false} to use READ_COMMITTED (allows phantom reads on PostgreSQL)
      */
     public static void run(boolean applyIsolation) {
         System.out.println("\n======================================================");
@@ -47,7 +52,7 @@ public class PhantomReadDemo {
                 conn.setAutoCommit(false);
                 conn.setTransactionIsolation(applyIsolation
                         ? Connection.TRANSACTION_SERIALIZABLE
-                        : Connection.TRANSACTION_REPEATABLE_READ);
+                        : Connection.TRANSACTION_READ_COMMITTED);
 
                 long first = TransactionHelper.countHighSalaryEmployees(
                         conn, TransactionHelper.PHANTOM_SALARY_THRESHOLD);

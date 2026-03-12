@@ -2,27 +2,26 @@ package uz.itpu.workingWithTransactionsUsingJdbc;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.util.concurrent.CountDownLatch;
+import java.sql.Savepoint;
 
 /**
  * Demonstrates the <b>Dirty Read</b> transaction anomaly.
  *
- * <p>Scenario:
+ * <p><b>PostgreSQL note:</b> PostgreSQL does not implement {@code READ_UNCOMMITTED} —
+ * it silently upgrades it to {@code READ_COMMITTED}, making a true two-connection dirty
+ * read impossible on this engine. Instead, the anomaly is simulated within a <em>single
+ * connection</em> using a {@link Savepoint}:
  * <ol>
- *   <li>Transaction B (writer) updates Alice's salary to
- *       {@value TransactionHelper#DIRTY_SALARY_VALUE} but does <em>NOT</em> commit.</li>
- *   <li>Transaction A (reader) reads Alice's salary.</li>
- *   <li>Transaction B rolls back its change.</li>
+ *   <li>Write a dirty salary value (not yet committed).</li>
+ *   <li>Read it back — this is what another session would see on a DB that allows dirty reads.</li>
+ *   <li>Roll back to the savepoint — the dirty value disappears.</li>
+ *   <li>Read again — now showing the clean, committed value.</li>
  * </ol>
  *
  * <p>Without isolation ({@code applyIsolation = false}):
- * Reader uses {@code READ_UNCOMMITTED} → sees the dirty value.<br>
+ * The dirty value is printed before the rollback, showing what a dirty read would expose.<br>
  * With isolation ({@code applyIsolation = true}):
- * Reader uses {@code READ_COMMITTED} → sees the original committed salary.
- *
- * <p><b>Note:</b> PostgreSQL does not implement {@code READ_UNCOMMITTED}; it silently
- * upgrades it to {@code READ_COMMITTED}, so the dirty-read anomaly will not be observable
- * on PostgreSQL regardless of the flag.
+ * The write is committed before reading, so the reader always sees a consistent value.
  */
 public class DirtyReadDemo {
 
@@ -31,21 +30,46 @@ public class DirtyReadDemo {
     /**
      * Runs the dirty-read demo.
      *
-     * @param applyIsolation {@code true} to use READ_COMMITTED (prevents the anomaly);
-     *                       {@code false} to use READ_UNCOMMITTED (allows dirty reads)
+     * @param applyIsolation {@code true} – commit before reading (clean);
+     *                       {@code false} – read before commit then rollback (dirty simulation)
      */
     public static void run(boolean applyIsolation) {
         System.out.println("\n======================================================");
         System.out.println("  DIRTY READ  (isolation applied = " + applyIsolation + ")");
+        System.out.println("  (simulated via Savepoint – PostgreSQL ignores READ_UNCOMMITTED)");
         System.out.println("======================================================");
 
-        CountDownLatch writerHasUpdated = new CountDownLatch(1);
-        CountDownLatch readerHasDone    = new CountDownLatch(1);
+        try (Connection conn = TransactionHelper.openConnection()) {
+            conn.setAutoCommit(false);
 
-        // --- Transaction B: writer thread ---
-        Thread writer = new Thread(() -> {
-            try (Connection conn = TransactionHelper.openConnection()) {
-                conn.setAutoCommit(false);
+            double originalSalary = TransactionHelper.readSalary(conn, TransactionHelper.TARGET_EMPLOYEE_ID);
+            System.out.printf("  [Before] Alice's committed salary = %.2f%n", originalSalary);
+
+            if (applyIsolation) {
+                // CLEAN path: update → commit → read  (no dirty data ever visible)
+                try (PreparedStatement ps = conn.prepareStatement(
+                        "UPDATE employees SET salary = ? WHERE id = ?")) {
+                    ps.setDouble(1, TransactionHelper.DIRTY_SALARY_VALUE);
+                    ps.setInt(2, TransactionHelper.TARGET_EMPLOYEE_ID);
+                    ps.executeUpdate();
+                }
+                conn.commit(); // committed first, then read
+                double salary = TransactionHelper.readSalary(conn, TransactionHelper.TARGET_EMPLOYEE_ID);
+                System.out.printf("  [Reader] Salary after commit = %.2f  ← Clean read (committed value)%n", salary);
+
+                // restore original value
+                try (PreparedStatement ps = conn.prepareStatement(
+                        "UPDATE employees SET salary = ? WHERE id = ?")) {
+                    ps.setDouble(1, originalSalary);
+                    ps.setInt(2, TransactionHelper.TARGET_EMPLOYEE_ID);
+                    ps.executeUpdate();
+                }
+                conn.commit();
+
+            } else {
+                // DIRTY path: update → savepoint → read (sees dirty) → rollback to savepoint → read again (clean)
+                Savepoint beforeDirtyWrite = conn.setSavepoint("beforeDirtyWrite");
+
                 try (PreparedStatement ps = conn.prepareStatement(
                         "UPDATE employees SET salary = ? WHERE id = ?")) {
                     ps.setDouble(1, TransactionHelper.DIRTY_SALARY_VALUE);
@@ -55,44 +79,23 @@ public class DirtyReadDemo {
                 System.out.printf("  [Writer] Updated salary to %.2f – NOT committed yet.%n",
                         TransactionHelper.DIRTY_SALARY_VALUE);
 
-                writerHasUpdated.countDown(); // signal reader: dirty data is "live"
-                readerHasDone.await();        // wait for reader to finish
+                double dirtySalary = TransactionHelper.readSalary(conn, TransactionHelper.TARGET_EMPLOYEE_ID);
+                System.out.printf("  [Reader] Salary read = %.2f  ← DIRTY READ! (uncommitted value)%n",
+                        dirtySalary);
 
-                conn.rollback();
-                System.out.println("  [Writer] Rolled back the update.");
-            } catch (Exception e) {
-                System.err.println("  [Writer] Error: " + e.getMessage());
-            }
-        }, "WriterThread");
+                conn.rollback(beforeDirtyWrite); // undo the dirty write
+                System.out.println("  [Writer] Rolled back to savepoint – dirty value is gone.");
 
-        // --- Transaction A: reader thread ---
-        Thread reader = new Thread(() -> {
-            try (Connection conn = TransactionHelper.openConnection()) {
-                conn.setAutoCommit(false);
-                conn.setTransactionIsolation(applyIsolation
-                        ? Connection.TRANSACTION_READ_COMMITTED
-                        : Connection.TRANSACTION_READ_UNCOMMITTED);
+                double cleanSalary = TransactionHelper.readSalary(conn, TransactionHelper.TARGET_EMPLOYEE_ID);
+                System.out.printf("  [Reader] Salary after rollback = %.2f  ← Back to committed value%n",
+                        cleanSalary);
 
-                writerHasUpdated.await(); // wait until dirty data exists
-
-                double salary = TransactionHelper.readSalary(conn, TransactionHelper.TARGET_EMPLOYEE_ID);
-                System.out.printf("  [Reader] Salary read = %.2f  ← %s%n",
-                        salary,
-                        salary == TransactionHelper.DIRTY_SALARY_VALUE
-                                ? "DIRTY READ occurred! (uncommitted value)"
-                                : "Clean read (committed value)");
-
-                readerHasDone.countDown();
                 conn.commit();
-            } catch (Exception e) {
-                System.err.println("  [Reader] Error: " + e.getMessage());
             }
-        }, "ReaderThread");
 
-        writer.start();
-        reader.start();
-        TransactionHelper.joinQuietly(writer);
-        TransactionHelper.joinQuietly(reader);
+        } catch (Exception e) {
+            System.err.println("  Error: " + e.getMessage());
+        }
     }
 }
 
