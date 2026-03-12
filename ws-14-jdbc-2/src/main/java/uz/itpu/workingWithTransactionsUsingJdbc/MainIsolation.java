@@ -18,7 +18,7 @@ package uz.itpu.workingWithTransactionsUsingJdbc;
  */
 public class MainIsolation {
 
-    private static final boolean IS_ISOLATION_APPLIED = false;
+    private static final boolean IS_ISOLATION_APPLIED = true;
 
     public static void main(String[] args) {
         // Simulated via Savepoint (because PostgreSQL ignores READ_UNCOMMITTED)
