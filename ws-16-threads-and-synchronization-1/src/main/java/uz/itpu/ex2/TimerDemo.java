@@ -22,7 +22,7 @@ class TimerCounter extends TimerTask {
     public void run() {
         System.out.print(++i);
         try {
-            TimeUnit.SECONDS.sleep(3);
+            TimeUnit.SECONDS.sleep(1);
         } catch (InterruptedException e) {
             throw new IllegalStateException();
         }

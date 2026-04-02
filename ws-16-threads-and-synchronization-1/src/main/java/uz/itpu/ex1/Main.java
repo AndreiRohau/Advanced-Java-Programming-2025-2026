@@ -17,13 +17,14 @@ public class Main {
         runnable.run();
         
         imitationOfProcess("main");
-
+        System.out.println("main is over");
     }
 
     private static void imitationOfProcess(String threadTag) {
         for (int i = 0; i < I; i++) {
             System.out.println(threadTag + " : ------------ " + i);
         }
+        System.out.println(threadTag + " : is done");
     }
 
     public static Thread prepareNewThread(String threadTag) {

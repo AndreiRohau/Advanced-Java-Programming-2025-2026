@@ -50,6 +50,7 @@ class TaskCallable implements Callable<String> {
             System.out.println("Task_" + taskNumber + ": " + i);
             try {
                 Thread.sleep((int)(Math.random() * 1000));
+//                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 throw new IllegalStateException();
             }
