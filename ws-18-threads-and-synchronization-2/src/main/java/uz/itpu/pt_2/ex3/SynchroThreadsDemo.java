@@ -20,7 +20,5 @@ public class SynchroThreadsDemo {
         } catch (IOException | InterruptedException e) {
             throw new IllegalStateException();
         }
-        System.out.println("As a result, both threads write their data to the same file and " +
-                "the output to the console at the same time, resulting in erratic and unpredictable writing. ");
     }
 }

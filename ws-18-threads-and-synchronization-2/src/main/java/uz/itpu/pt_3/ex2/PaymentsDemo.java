@@ -1,7 +1,5 @@
 package uz.itpu.pt_3.ex2;
 
-import uz.itpu.pt_3.ex1.Payment;
-
 import java.util.concurrent.TimeUnit;
 
 /**

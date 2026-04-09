@@ -3,7 +3,8 @@ package uz.itpu.pt_2.ex4;
 public class WithoutSynchroBlockDemo {
     public static void main(String[] args) {
         final StringBuilder string = new StringBuilder();
-        new Thread(() -> {
+
+        Thread a = new Thread(() -> {
             int i = 0;
             while (i++ < 3) {
                 string.append("A");
@@ -14,8 +15,9 @@ public class WithoutSynchroBlockDemo {
                 }
                 System.out.println(string);
             }
-        }).start();
-        new Thread(() -> {
+        });
+
+        Thread b = new Thread(() -> {
             int j = 0;
             while (j++ < 3) {
                 string.append("B");
@@ -26,6 +28,9 @@ public class WithoutSynchroBlockDemo {
                 }
                 System.out.println(string);
             }
-        }).start();
+        });
+
+        a.start();
+        b.start();
     }
 }

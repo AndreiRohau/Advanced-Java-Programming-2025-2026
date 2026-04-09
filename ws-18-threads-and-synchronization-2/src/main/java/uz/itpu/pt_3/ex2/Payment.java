@@ -1,4 +1,4 @@
-package uz.itpu.pt_3.ex1;
+package uz.itpu.pt_3.ex2;
 
 import java.util.Scanner;
 
@@ -21,6 +21,7 @@ public class Payment {
     public synchronized void init() {
         System.out.println("Init amount:");
         amount = new Scanner(System.in).nextInt();
-        this.notify();
+//        this.notify(); // problem
+        this.notifyAll();
     }
 }

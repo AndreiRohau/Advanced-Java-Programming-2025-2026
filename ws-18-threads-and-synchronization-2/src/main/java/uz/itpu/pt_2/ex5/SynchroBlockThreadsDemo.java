@@ -3,7 +3,8 @@ package uz.itpu.pt_2.ex5;
 public class SynchroBlockThreadsDemo {
     public static void main(String[] args) {
         final StringBuilder string = new StringBuilder();
-        new Thread(() -> {
+
+        Thread a = new Thread(() -> {
             synchronized (string) {
                 int i = 0;
                 while (i++ < 3) {
@@ -16,8 +17,9 @@ public class SynchroBlockThreadsDemo {
                     System.out.println(string);
                 }
             }
-        }).start();
-        new Thread(() -> {
+        });
+
+        Thread b = new Thread(() -> {
             synchronized (string) {
                 int j = 0;
                 while (j++ < 3) {
@@ -30,7 +32,10 @@ public class SynchroBlockThreadsDemo {
                     System.out.println(string);
                 }
             }
-        }).start();
+        });
+
+        a.start();
+        b.start();
     }
 }
 

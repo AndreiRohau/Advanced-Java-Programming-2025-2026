@@ -22,8 +22,8 @@ public class CommonResource implements AutoCloseable {
             file.append(str + i);
             System.out.print(str + i);
             Thread.sleep((long)(Math.random() * 15));
-            file.append("->" + str.charAt(0) + i + " ");
-            System.out.print("->" + str.charAt(0) + i + " ");
+            file.append("->" + str.charAt(0) + i + " " + "\n");
+            System.out.print("->" + str.charAt(0) + i + " " + "\n");
         } catch (IOException | InterruptedException e) {
             throw new IllegalStateException();
         }
