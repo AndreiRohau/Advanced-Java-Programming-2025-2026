@@ -1,0 +1,31 @@
+package uz.itpu.pt_2.ex4;
+
+public class WithoutSynchroBlockDemo {
+    public static void main(String[] args) {
+        final StringBuilder string = new StringBuilder();
+        new Thread(() -> {
+            int i = 0;
+            while (i++ < 3) {
+                string.append("A");
+                try {
+                    Thread.sleep(15);
+                } catch (InterruptedException e) {
+                    throw new IllegalStateException();
+                }
+                System.out.println(string);
+            }
+        }).start();
+        new Thread(() -> {
+            int j = 0;
+            while (j++ < 3) {
+                string.append("B");
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    throw new IllegalStateException();
+                }
+                System.out.println(string);
+            }
+        }).start();
+    }
+}
