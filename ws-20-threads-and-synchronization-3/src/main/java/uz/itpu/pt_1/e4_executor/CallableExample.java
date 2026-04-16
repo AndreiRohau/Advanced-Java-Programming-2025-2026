@@ -19,6 +19,8 @@ public class CallableExample {
 
         System.out.println("Waiting for result...");
 
+        // do something while the executor is performing task. it will store result in future when done.
+
         // This blocks until the thread is done and returns the value
         String result = futureResult.get();
         System.out.println("Result: " + result);

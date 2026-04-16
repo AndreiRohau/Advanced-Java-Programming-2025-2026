@@ -1,5 +1,6 @@
 package uz.itpu.pt_1.e1_collection;
 
+import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.List;
 
@@ -21,6 +22,7 @@ import java.util.List;
 public class CopyOnWriteExample {
     public static void main(String[] args) {
         List<String> list = new CopyOnWriteArrayList<>();
+//        List<String> list = new ArrayList<>();
         list.add("Apple");
         list.add("Banana");
 

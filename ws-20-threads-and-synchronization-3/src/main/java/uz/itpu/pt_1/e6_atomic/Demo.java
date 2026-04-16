@@ -3,8 +3,10 @@ package uz.itpu.pt_1.e6_atomic;
 public class Demo {
     public static void main(String[] args) throws InterruptedException {
         MyCounter counter = new MyCounter();
+
         int threadCount = 100;
-        int incrementCount = 1000000;
+        int incrementCount = 1_000_000;
+
         MyCountThread[] threads = new MyCountThread[threadCount];
 
         for (int i = 0; i < threadCount; i++) {

@@ -1,4 +1,4 @@
-package uz.itpu.pt_2.e3;
+package uz.itpu.pt_2;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;

@@ -5,10 +5,13 @@ import java.util.Map;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+import static java.util.Objects.isNull;
+
 public class ReentrantReadWriteLockDemo {
 
-    ReadWriteLock rwLock = new ReentrantReadWriteLock();
     Map<String, String> cache = new HashMap<>();
+
+    ReadWriteLock rwLock = new ReentrantReadWriteLock();
 
     public String getValue(String key) {
         rwLock.readLock().lock(); // Multiple threads can read simultaneously

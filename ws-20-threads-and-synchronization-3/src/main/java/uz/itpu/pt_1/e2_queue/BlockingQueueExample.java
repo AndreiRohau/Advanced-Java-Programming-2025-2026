@@ -17,11 +17,11 @@ public class BlockingQueueExample {
         // Producer Thread
         new Thread(() -> {
             try {
-                queue.put(1); // Added
-                queue.put(2); // Added
-                System.out.println("Queue full. Producer waiting...");
-                queue.put(3); // This blocks until a consumer takes an item
-                System.out.println("Producer finally added 3!");
+                queue.put(1); // Added = 1
+                queue.put(2); // Added = 2
+                System.out.println("Queue full. Producer waiting..."); // = 3
+                queue.put(3); // This blocks until a consumer takes an item = 5
+                System.out.println("Producer finally added 3!"); // = 6
             } catch (InterruptedException e) { e.printStackTrace(); }
         }).start();
 
@@ -30,7 +30,7 @@ public class BlockingQueueExample {
         // Consumer Thread
         new Thread(() -> {
             try {
-                System.out.println("Consumer took: " + queue.take());
+                System.out.println("Consumer took: " + queue.take()); // = 4
             } catch (InterruptedException e) { e.printStackTrace(); }
         }).start();
     }

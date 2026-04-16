@@ -1,4 +1,4 @@
-package uz.itpu.pt_2.e3.ex2_SynchronousQueue;
+package uz.itpu.pt_2.ex2_SynchronousQueue;
 
 import java.util.concurrent.SynchronousQueue;
 

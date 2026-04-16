@@ -14,12 +14,14 @@ public class MyThread extends Thread {
     MyObject obj1;
     MyObject obj2;
     MyObject obj3;
+
     public MyThread(String str, MyObject obj1, MyObject obj2, MyObject obj3) {
         threadName = str;
         this.obj1 = obj1;
         this.obj2 = obj2;
         this.obj3 = obj3;
     }
+
     public void run() {
         synchronized(obj1) {
             obj1.order(obj3);
