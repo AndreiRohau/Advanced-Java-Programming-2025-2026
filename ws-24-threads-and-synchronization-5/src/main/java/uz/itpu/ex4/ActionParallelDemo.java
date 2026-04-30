@@ -25,7 +25,7 @@ public class ActionParallelDemo {
         long sec = System.currentTimeMillis();
         Callable<Integer> task = () -> IntStream.range(0, 100_000_000)
                 .boxed()
-                .parallel()
+                .parallel() // ! if we will not have it here - ForkJoinPool will process this task in one thread, and we will not have any parallelism
                 .map(x -> x / 3)
 //                .peek(th -> System.out.println(Thread.currentThread().getName()))
                 .reduce((x, y) -> x + (int)(3 * Math.sin(y)))

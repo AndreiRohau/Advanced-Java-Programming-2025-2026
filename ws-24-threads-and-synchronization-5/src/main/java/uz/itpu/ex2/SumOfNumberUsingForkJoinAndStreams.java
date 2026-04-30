@@ -8,6 +8,7 @@ import java.util.concurrent.RecursiveTask;
 public class SumOfNumberUsingForkJoinAndStreams {
     private final static long N = 1_000_000L;
     private static final int NUM_THREADS = 10;
+
     public static void main(String[] args) {
         ForkJoinPool pool = new ForkJoinPool(NUM_THREADS);
         long computedSum = pool.invoke(new RecursiveSumOfNumber(0, N));
