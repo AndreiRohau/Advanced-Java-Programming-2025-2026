@@ -23,6 +23,8 @@ public class SumOfNumberUsingForkJoin {
         }
         public Long compute() {
             long expectedLoadOfItemsPerThread = (N / NUM_THREADS); // 100k items per each of 10 threads
+
+            // task fragmentation threshold
             if ((to - from) <= expectedLoadOfItemsPerThread) { // {1m} <= expectedItemsPerThread
                 long localSum = 0;
                 for (long number = from; number <= to; number++) {
@@ -34,10 +36,10 @@ public class SumOfNumberUsingForkJoin {
                 long middle = (from + to) / 2; // find the middle point of the range
                 System.out.printf("Forking into two ranges: [%d ; %d] and [%d ; %d]%n", from, middle, middle + 1, to);
                 RecursiveSumOfNumber firstHalf = new RecursiveSumOfNumber(from, middle);
-                firstHalf.fork();
+                firstHalf.fork(); // put first half of the task into the pool for execution
                 RecursiveSumOfNumber secondHalf = new RecursiveSumOfNumber(middle + 1, to);
-                long resultSecondTask = secondHalf.compute();
-                return firstHalf.join() + resultSecondTask;
+                long resultSecondTask = secondHalf.compute(); // compute the second half of the task in the current thread recursively
+                return firstHalf.join() + resultSecondTask; // join results when the first half is done
             }
         }
     }

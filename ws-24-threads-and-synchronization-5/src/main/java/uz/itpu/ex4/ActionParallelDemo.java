@@ -32,7 +32,7 @@ public class ActionParallelDemo {
                 .get();
         ForkJoinPool pool = new ForkJoinPool(8);
         try {
-            int result = pool.submit(task).get();
+            int result = pool.submit(task).get(); // parallel() understands it's place and is using ForkJoinPool.commonPool()
             System.out.println(result);
         } catch (InterruptedException | ExecutionException e) {
             throw new IllegalStateException();
@@ -40,3 +40,13 @@ public class ActionParallelDemo {
         System.out.println((System.currentTimeMillis() - sec) / 1000.);
     }
 }
+/*
+In Java, a Stream is sequential by default. Think of the ForkJoinPool as a "house" full of workers.
+The .parallel() call is like giving those workers a command: "Break this blueprint into pieces and work on them together."
+Without this command, a single worker will take the entire blueprint and work on it alone from start to finish,
+even if there are seven other colleagues sitting idle in the next room.
+
+An important point: .parallel() acts like a "toggle switch."
+It tells the stream to start creating internal RecursiveTask objects and calling
+those same fork() and join() methods we discussed earlier.
+ */

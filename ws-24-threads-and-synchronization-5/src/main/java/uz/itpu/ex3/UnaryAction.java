@@ -6,6 +6,7 @@ import java.util.function.UnaryOperator;
 
 /**
  * The UnaryAction<T> class is a thread of the RecursiveAction type.
+ *
  * When creating an object of this class, you specify a list of real values,
  * an operation for processing the list elements, and the range of elements to be processed.
  * The compute() method determines if the number of elements is less than the THRESHOLD value.
@@ -20,6 +21,7 @@ public class UnaryAction<T> extends RecursiveAction {
     private int begin;
     private int end;
     private static final int THRESHOLD = 100_000;
+
     public UnaryAction(List<T> subjectList, UnaryOperator<T> operator, int begin, int end) {
         this.operator = operator;
         this.subjectList = subjectList;
@@ -29,6 +31,7 @@ public class UnaryAction<T> extends RecursiveAction {
     public UnaryAction(List<T> subjectList, UnaryOperator<T> operator) {
         this(subjectList, operator, 0, subjectList.size());
     }
+
     @Override
     protected void compute() {
         if (end - begin < THRESHOLD) {
@@ -39,6 +42,8 @@ public class UnaryAction<T> extends RecursiveAction {
             }
         } else {
             int middle = (begin + end) / 2;
+            // first param forks
+            // second param computes in the current thread
             invokeAll(new UnaryAction<T>(subjectList, operator, begin, middle),
                     new UnaryAction<T>(subjectList, operator, middle, end));
         }

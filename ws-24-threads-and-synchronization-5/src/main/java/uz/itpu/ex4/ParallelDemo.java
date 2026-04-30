@@ -33,4 +33,19 @@ public class ParallelDemo {
         System.out.println(result);
         System.out.println((System.currentTimeMillis() - sec) / 1000.);
     }
+
+    public static void correct() {
+        long sec = System.currentTimeMillis();
+
+        // Используем LongStream напрямую без .boxed()
+        long result = LongStream.range(0, 100_000_000)
+                .parallel()
+                .map(x -> x / 7)
+                // В примитивном стриме reduce принимает identity (начальное значение)
+                // и LongBinaryOperator (работает с примитивами long)
+                .reduce(0L, (x, y) -> x + (long) (3 * Math.sin(y)));
+
+        System.out.println(result);
+        System.out.println((System.currentTimeMillis() - sec) / 1000.0);
+    }
 }
