@@ -46,8 +46,8 @@ ___
    - Interthread Communication
 ---
 10.
-   - Intro to High-Level Concurrency APIs
-   - Concurrent Collections
+    - Intro to High-Level Concurrency APIs
+    - Concurrent Collections
 ---
 11.
     - Thread Control
