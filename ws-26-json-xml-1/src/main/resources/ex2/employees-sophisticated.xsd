@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!-- Reusable simple type: salary must be >= 0 -->
+  <xs:simpleType name="salaryType">
+    <xs:restriction base="xs:decimal">
+      <xs:minInclusive value="0"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Reusable simple type: email pattern -->
+  <xs:simpleType name="emailType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[^@]+@[^@]+\.[^@]+"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="employees">
+    <xs:complexType>
+      <xs:sequence>
+        <!-- minOccurs/maxOccurs control repetition -->
+        <xs:element name="employee" minOccurs="1" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="firstName" type="xs:string"/>
+              <xs:element name="lastName"  type="xs:string"/>
+              <xs:element name="email"     type="emailType"/>
+              <xs:element name="salary"    type="salaryType"/>
+              <xs:element name="startDate" type="xs:date"/>
+              <!-- Optional: 0 or more phone numbers -->
+              <xs:element name="phone" type="xs:string" minOccurs="0" maxOccurs="3"/>
+            </xs:sequence>
+            <!-- Attribute declared after the sequence -->
+            <xs:attribute name="id" type="xs:positiveInteger" use="required"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>
+

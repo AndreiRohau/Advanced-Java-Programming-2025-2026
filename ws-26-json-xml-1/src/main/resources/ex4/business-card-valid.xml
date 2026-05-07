@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<businessCards organization="ITPU">
+  <card id="1" version="2.0">
+    <fullName>Alice Wonderland</fullName>
+    <title>Senior Software Engineer</title>
+    <department>Engineering</department>
+    <email>alice@itpu.uz</email>
+    <phone>+998-71-123-4567</phone>
+    <website>https://alice.dev</website>
+    <linkedIn>https://linkedin.com/in/alice</linkedIn>
+  </card>
+  <card id="2">
+    <fullName>Bob Builder</fullName>
+    <title>Sales Manager</title>
+    <department>Sales</department>
+    <email>bob@itpu.uz</email>
+  </card>
+</businessCards>
+

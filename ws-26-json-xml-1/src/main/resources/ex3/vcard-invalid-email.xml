@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Invalid: email does not match the pattern -->
+<vcards>
+  <vcard id="3">
+    <fullName>Charlie</fullName>
+    <email>charlie-at-nowhere</email>
+  </vcard>
+</vcards>
+

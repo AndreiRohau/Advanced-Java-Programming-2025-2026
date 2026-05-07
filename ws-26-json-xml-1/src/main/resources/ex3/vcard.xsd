@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!-- Simple type for e-mail -->
+  <xs:simpleType name="emailType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[^@]+@[^@]+\.[^@]+"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Simple type for phone (E.164-ish) -->
+  <xs:simpleType name="phoneType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\+?[0-9 \-]{7,15}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Root element -->
+  <xs:element name="vcards">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="vcard" maxOccurs="unbounded">
+          <xs:complexType>
+
+            <!-- ELEMENT declarations (building blocks) -->
+            <xs:sequence>
+              <xs:element name="fullName"  type="xs:string"/>
+              <xs:element name="email"     type="emailType"/>
+              <!-- phone is optional; preferred attribute marks primary -->
+              <xs:element name="phone" minOccurs="0" maxOccurs="5">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="phoneType">
+                      <!-- ATTRIBUTE declared inside its own element type -->
+                      <xs:attribute name="preferred" type="xs:boolean" default="false"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <!-- xs:date element -->
+              <xs:element name="birthday" type="xs:date" minOccurs="0"/>
+            </xs:sequence>
+
+            <!-- ATTRIBUTES declared AFTER the sequence (placement rule) -->
+            <xs:attribute name="id"      type="xs:positiveInteger" use="required"/>
+            <xs:attribute name="version" type="xs:string"          default="3.0"/>
+
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>
+

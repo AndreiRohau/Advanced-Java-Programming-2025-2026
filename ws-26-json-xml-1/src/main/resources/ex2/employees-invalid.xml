@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Invalid: email pattern violated, salary below minInclusive -->
+<employees>
+  <employee id="3">
+    <firstName>Charlie</firstName>
+    <lastName>Brown</lastName>
+    <email>not-an-email</email>
+    <salary>-500</salary>
+    <startDate>2022-01-10</startDate>
+  </employee>
+</employees>
+

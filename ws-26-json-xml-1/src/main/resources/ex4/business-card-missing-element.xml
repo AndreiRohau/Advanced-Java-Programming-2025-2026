@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Invalid: required element <department> is missing -->
+<businessCards organization="ITPU">
+  <card id="4">
+    <fullName>Dana</fullName>
+    <title>Designer</title>
+    <email>dana@itpu.uz</email>
+  </card>
+</businessCards>
+

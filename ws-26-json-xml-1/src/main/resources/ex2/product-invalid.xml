@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Invalid: price is not a decimal number -->
+<product>
+  <name>Laptop</name>
+  <price>not-a-number</price>
+  <stock>42</stock>
+</product>
+

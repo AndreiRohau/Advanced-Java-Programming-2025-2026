@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Not well-formed: <fullName> tag is never closed -->
+<businessCards organization="ITPU">
+  <card id="5">
+    <fullName>Eve
+    <email>eve@itpu.uz</email>
+  </card>
+</businessCards>
+

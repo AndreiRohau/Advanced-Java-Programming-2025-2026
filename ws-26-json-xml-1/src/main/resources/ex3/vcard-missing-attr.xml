@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Invalid: required attribute 'id' is missing -->
+<vcards>
+  <vcard>
+    <fullName>Dana</fullName>
+    <email>dana@example.com</email>
+  </vcard>
+</vcards>
+

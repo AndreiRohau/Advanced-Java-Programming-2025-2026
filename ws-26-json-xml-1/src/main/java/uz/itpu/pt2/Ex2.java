@@ -5,7 +5,6 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
-import java.io.StringReader;
 
 /**
  * Slide 2: Anatomy of an XML Schema (XSD).
@@ -17,157 +16,47 @@ import java.io.StringReader;
  *   <li>Complexity scale: from a basic declaration up to sophisticated constraints
  *       (minOccurs, maxOccurs, minInclusive, pattern).</li>
  * </ul>
+ *
+ * <p>Resources used (src/main/resources/ex2/):
+ * <ul>
+ *   <li>product-basic.xsd           – basic schema with primitive types</li>
+ *   <li>product-valid.xml           – valid product XML</li>
+ *   <li>product-invalid.xml         – invalid product (non-decimal price)</li>
+ *   <li>employees-sophisticated.xsd – schema with restrictions, patterns, occurrences</li>
+ *   <li>employees-valid.xml         – valid employees XML</li>
+ *   <li>employees-invalid.xml       – invalid employees (bad email &amp; negative salary)</li>
+ * </ul>
  */
 public class Ex2 {
-
-    // -----------------------------------------------------------------------
-    //  BASIC schema – a plain product catalogue with only type declarations
-    // -----------------------------------------------------------------------
-
-    private static final String BASIC_XSD =
-            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-            "<xs:schema xmlns:xs=\"http://www.w3.org/2001/XMLSchema\">\n" +
-            "  <!-- Basic: just element names and primitive types -->\n" +
-            "  <xs:element name=\"product\">\n" +
-            "    <xs:complexType>\n" +
-            "      <xs:sequence>\n" +
-            "        <xs:element name=\"name\"  type=\"xs:string\"/>\n" +
-            "        <xs:element name=\"price\" type=\"xs:decimal\"/>\n" +
-            "        <xs:element name=\"stock\" type=\"xs:integer\"/>\n" +
-            "      </xs:sequence>\n" +
-            "    </xs:complexType>\n" +
-            "  </xs:element>\n" +
-            "</xs:schema>";
-
-    private static final String BASIC_XML_VALID =
-            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-            "<product>\n" +
-            "  <name>Laptop</name>\n" +
-            "  <price>999.99</price>\n" +
-            "  <stock>42</stock>\n" +
-            "</product>";
-
-    private static final String BASIC_XML_INVALID =
-            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-            "<product>\n" +
-            "  <name>Laptop</name>\n" +
-            "  <price>not-a-number</price>\n" +   // xs:decimal violated
-            "  <stock>42</stock>\n" +
-            "</product>";
-
-    // -----------------------------------------------------------------------
-    //  SOPHISTICATED schema – employee record with restrictions & occurrences
-    // -----------------------------------------------------------------------
-
-    private static final String SOPHISTICATED_XSD =
-            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-            "<xs:schema xmlns:xs=\"http://www.w3.org/2001/XMLSchema\">\n" +
-            "\n" +
-            "  <!-- Reusable simple type: salary must be >= 0 -->\n" +
-            "  <xs:simpleType name=\"salaryType\">\n" +
-            "    <xs:restriction base=\"xs:decimal\">\n" +
-            "      <xs:minInclusive value=\"0\"/>\n" +
-            "    </xs:restriction>\n" +
-            "  </xs:simpleType>\n" +
-            "\n" +
-            "  <!-- Reusable simple type: email pattern -->\n" +
-            "  <xs:simpleType name=\"emailType\">\n" +
-            "    <xs:restriction base=\"xs:string\">\n" +
-            "      <xs:pattern value=\"[^@]+@[^@]+\\.[^@]+\"/>\n" +
-            "    </xs:restriction>\n" +
-            "  </xs:simpleType>\n" +
-            "\n" +
-            "  <xs:element name=\"employees\">\n" +
-            "    <xs:complexType>\n" +
-            "      <xs:sequence>\n" +
-            "        <!-- minOccurs/maxOccurs control repetition -->\n" +
-            "        <xs:element name=\"employee\" minOccurs=\"1\" maxOccurs=\"unbounded\">\n" +
-            "          <xs:complexType>\n" +
-            "            <xs:sequence>\n" +
-            "              <xs:element name=\"firstName\" type=\"xs:string\"/>\n" +
-            "              <xs:element name=\"lastName\"  type=\"xs:string\"/>\n" +
-            "              <xs:element name=\"email\"     type=\"emailType\"/>\n" +
-            "              <xs:element name=\"salary\"    type=\"salaryType\"/>\n" +
-            "              <xs:element name=\"startDate\" type=\"xs:date\"/>\n" +
-            "              <!-- Optional: 0 or more phone numbers -->\n" +
-            "              <xs:element name=\"phone\" type=\"xs:string\"\n" +
-            "                          minOccurs=\"0\" maxOccurs=\"3\"/>\n" +
-            "            </xs:sequence>\n" +
-            "            <!-- Attribute declared after the sequence -->\n" +
-            "            <xs:attribute name=\"id\" type=\"xs:positiveInteger\" use=\"required\"/>\n" +
-            "          </xs:complexType>\n" +
-            "        </xs:element>\n" +
-            "      </xs:sequence>\n" +
-            "    </xs:complexType>\n" +
-            "  </xs:element>\n" +
-            "\n" +
-            "</xs:schema>";
-
-    private static final String SOPHISTICATED_XML_VALID =
-            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-            "<employees>\n" +
-            "  <employee id=\"1\">\n" +
-            "    <firstName>Alice</firstName>\n" +
-            "    <lastName>Smith</lastName>\n" +
-            "    <email>alice@example.com</email>\n" +
-            "    <salary>75000.00</salary>\n" +
-            "    <startDate>2020-03-15</startDate>\n" +
-            "    <phone>+1-555-0100</phone>\n" +
-            "  </employee>\n" +
-            "  <employee id=\"2\">\n" +
-            "    <firstName>Bob</firstName>\n" +
-            "    <lastName>Jones</lastName>\n" +
-            "    <email>bob@example.com</email>\n" +
-            "    <salary>82000.50</salary>\n" +
-            "    <startDate>2018-07-01</startDate>\n" +
-            "  </employee>\n" +
-            "</employees>";
-
-    private static final String SOPHISTICATED_XML_INVALID =
-            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-            "<employees>\n" +
-            "  <employee id=\"3\">\n" +
-            "    <firstName>Charlie</firstName>\n" +
-            "    <lastName>Brown</lastName>\n" +
-            "    <email>not-an-email</email>\n" +    // pattern violated
-            "    <salary>-500</salary>\n" +           // minInclusive violated
-            "    <startDate>2022-01-10</startDate>\n" +
-            "  </employee>\n" +
-            "</employees>";
-
-    // -----------------------------------------------------------------------
-    //  main
-    // -----------------------------------------------------------------------
 
     public static void main(String[] args) {
         System.out.println("=== Slide 2: Anatomy of an XML Schema (XSD) ===\n");
 
         System.out.println("--- Basic Schema (primitive type declarations) ---");
-        validate(BASIC_XSD, BASIC_XML_VALID,   "basic – valid product");
-        validate(BASIC_XSD, BASIC_XML_INVALID, "basic – invalid price (not a decimal)");
+        validate("ex2/product-basic.xsd", "ex2/product-valid.xml",   "basic – valid product");
+        validate("ex2/product-basic.xsd", "ex2/product-invalid.xml", "basic – invalid price (not a decimal)");
 
         System.out.println("\n--- Sophisticated Schema (restrictions, patterns, occurrences) ---");
-        validate(SOPHISTICATED_XSD, SOPHISTICATED_XML_VALID,   "sophisticated – valid employees");
-        validate(SOPHISTICATED_XSD, SOPHISTICATED_XML_INVALID, "sophisticated – bad email & negative salary");
+        validate("ex2/employees-sophisticated.xsd", "ex2/employees-valid.xml",   "sophisticated – valid employees");
+        validate("ex2/employees-sophisticated.xsd", "ex2/employees-invalid.xml", "sophisticated – bad email & negative salary");
     }
 
     /**
-     * Validates {@code xml} against {@code xsd} and prints the outcome.
+     * Validates the XML classpath resource against the XSD classpath resource and prints the outcome.
      *
-     * @param xsd   the XSD schema as a string (stored separately from the XML data)
-     * @param xml   the XML document to validate
-     * @param label a human-readable description for the test case
+     * @param xsdPath classpath-relative path to the XSD schema (stored separately from the XML data)
+     * @param xmlPath classpath-relative path to the XML document
+     * @param label   a human-readable description for the test case
      */
-    private static void validate(String xsd, String xml, String label) {
+    private static void validate(String xsdPath, String xmlPath, String label) {
         try {
             SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-            Schema schema = factory.newSchema(new StreamSource(new StringReader(xsd)));
+            Schema schema = factory.newSchema(new StreamSource(Ex1.openResource(xsdPath)));
             Validator validator = schema.newValidator();
-            validator.validate(new StreamSource(new StringReader(xml)));
+            validator.validate(new StreamSource(Ex1.openResource(xmlPath)));
             System.out.printf("  [%-50s]  VALID ✔%n", label);
         } catch (Exception e) {
             System.out.printf("  [%-50s]  INVALID ✘  %s%n", label, e.getMessage());
         }
     }
 }
-

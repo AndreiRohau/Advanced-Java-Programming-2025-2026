@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vcards>
+  <!-- vcard with all elements and both attributes -->
+  <vcard id="1" version="4.0">
+    <fullName>Alice Wonderland</fullName>
+    <email>alice@example.com</email>
+    <phone preferred="true">+1-555-0100</phone>
+    <phone>+1-555-0199</phone>
+    <birthday>1990-06-15</birthday>
+  </vcard>
+  <!-- vcard with only required elements -->
+  <vcard id="2">
+    <fullName>Bob Builder</fullName>
+    <email>bob@example.com</email>
+  </vcard>
+</vcards>
+

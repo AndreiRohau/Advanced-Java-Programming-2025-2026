@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!-- Reusable email type -->
+  <xs:simpleType name="emailType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[^@]+@[^@]+\.[^@]+"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Reusable phone type -->
+  <xs:simpleType name="phoneType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\+?[0-9 \-]{7,15}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Allowed departments (enumeration) -->
+  <xs:simpleType name="departmentType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Engineering"/>
+      <xs:enumeration value="Sales"/>
+      <xs:enumeration value="Marketing"/>
+      <xs:enumeration value="Finance"/>
+      <xs:enumeration value="HR"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="businessCards">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="card" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <!-- Required elements -->
+              <xs:element name="fullName"   type="xs:string"/>
+              <xs:element name="title"      type="xs:string"/>
+              <xs:element name="department" type="departmentType"/>
+              <xs:element name="email"      type="emailType"/>
+              <!-- Optional elements -->
+              <xs:element name="phone"    type="phoneType" minOccurs="0" maxOccurs="3"/>
+              <xs:element name="website"  type="xs:anyURI" minOccurs="0"/>
+              <xs:element name="linkedIn" type="xs:anyURI" minOccurs="0"/>
+            </xs:sequence>
+            <!-- Attributes AFTER the sequence (placement best practice) -->
+            <xs:attribute name="id"      type="xs:positiveInteger" use="required"/>
+            <xs:attribute name="version" type="xs:string"          default="1.0"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <!-- Root-level attribute -->
+      <xs:attribute name="organization" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>
+

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Invalid: department value is not in the enumeration -->
+<businessCards organization="ITPU">
+  <card id="3">
+    <fullName>Charlie</fullName>
+    <title>Intern</title>
+    <department>Unknown</department>
+    <email>charlie@itpu.uz</email>
+  </card>
+</businessCards>
+
