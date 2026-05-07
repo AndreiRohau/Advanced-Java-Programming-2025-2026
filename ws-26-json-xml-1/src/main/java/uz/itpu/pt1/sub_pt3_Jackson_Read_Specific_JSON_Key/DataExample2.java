@@ -21,6 +21,12 @@ public class DataExample2 {
 
         //read JSON like DOM Parser
         JsonNode rootNode = objectMapper.readTree(jsonData);
+
+        if (rootNode.has("id")) {
+            JsonNode local_id = rootNode.get("id");
+            long aLong = local_id.asLong();
+            System.out.println("aLong = " + aLong);
+        }
         JsonNode idNode = rootNode.path("id");
         System.out.println("id = "+idNode.asInt());
 

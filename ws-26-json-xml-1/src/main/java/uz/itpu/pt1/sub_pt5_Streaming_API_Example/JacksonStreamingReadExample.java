@@ -38,7 +38,7 @@ public class JacksonStreamingReadExample {
         emp.setCities(new ArrayList<String>());
         emp.setProperties(new HashMap<String, String>());
         List<Long> phoneNums = new ArrayList<Long>();
-        boolean insidePropertiesObj=false;
+        boolean insidePropertiesObj = false;
 
         parseJSON(jsonParser, emp, phoneNums, insidePropertiesObj);
 

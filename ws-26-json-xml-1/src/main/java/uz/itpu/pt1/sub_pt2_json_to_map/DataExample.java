@@ -20,6 +20,7 @@ public class DataExample {
         Map<String,String> myMap = new HashMap<String, String>();
 
         ObjectMapper objectMapper = new ObjectMapper();
+
         myMap = objectMapper.readValue(mapData, HashMap.class);
         System.out.println("Map is: "+myMap);
 

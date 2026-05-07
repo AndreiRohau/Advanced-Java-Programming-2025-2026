@@ -18,7 +18,7 @@ import java.util.List;
 public class Ex3 {
     public static void main(String[] args) throws JsonProcessingException {
         // JSON Arrays and Collections
-        String arr = "[{\"content\":\"content_1\",\"author\":{\"name\":\"author_name\"},\"createdAt\":\"2026-05-07T00:21:06.9036301\",\"note_title\":\"title_1\"}]";
+        String arr = "[{\"content\":\"content_1\",\"author\":{\"name\":\"author_name\"},\"createdAt\":\"2026-05-07T00:21:06.9036301\",\"note_title\":\"title_1\"}, {}, null]";
 
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDateTime.class,
@@ -38,6 +38,7 @@ public class Ex3 {
         // Jackson
         List<Note> notes2 = mapper.readValue(arr, new TypeReference<List<Note>>(){});
         System.out.println(notes2);
+        System.out.println();
 
     }
 }

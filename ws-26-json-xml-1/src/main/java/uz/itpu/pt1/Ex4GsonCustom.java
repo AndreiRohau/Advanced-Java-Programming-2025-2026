@@ -11,13 +11,14 @@ public class Ex4GsonCustom {
         // Configure ISO 8601 date pattern
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
-//                .setPrettyPrinting()
+                .setPrettyPrinting()
                 .create();
 
         Note note = new Note("Gson Tips", "Use builders!", new Author("John"), LocalDateTime.now());
 
         String json = gson.toJson(note);
         System.out.println(json);
+
     }
 }
 

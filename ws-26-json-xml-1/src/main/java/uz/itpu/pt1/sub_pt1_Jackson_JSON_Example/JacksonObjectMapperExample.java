@@ -38,6 +38,7 @@ public class JacksonObjectMapperExample {
         //writing to console, can write to any output stream such as file
         StringWriter stringEmp = new StringWriter();
         objectMapper.writeValue(stringEmp, emp1);
+        objectMapper.writeValue(stringEmp, emp1);
         System.out.println("Employee JSON is\n"+stringEmp);
     }
 

@@ -14,8 +14,8 @@ public class Ex5 {
     public static void main(String[] args) throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://jsonplaceholder.typicode.com/posts/1"))
-                .header("Accept", "application/json")
+                .uri(URI.create("https://dummyjson.com/products/1"))
+//                .header("Accept", "application/json")
                 .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
