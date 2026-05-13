@@ -1,0 +1,59 @@
+{
+    "items": [
+        {
+            "id": 101,
+            "firstName": "Andrei",
+            "lastName": "Rohau",
+            "active": true,
+            "salary": 8500.75,
+            "department": "Engineering",
+            "skills": [
+                "Java",
+                "Spring",
+                "SQL"
+            ],
+            "address": {
+                "city": "Tashkent",
+                "country": "Uzbekistan",
+                "zipCode": "100000"
+            }
+        },
+        {
+            "id": 102,
+            "firstName": "Aziza",
+            "lastName": "Karimova",
+            "active": true,
+            "salary": 7200.0,
+            "department": "QA",
+            "skills": [
+                "JUnit",
+                "Selenium",
+                "Postman"
+            ],
+            "address": {
+                "city": "Samarkand",
+                "country": "Uzbekistan",
+                "zipCode": "140100"
+            }
+        },
+        {
+            "id": 103,
+            "firstName": "Bekzod",
+            "lastName": "Rasulov",
+            "active": false,
+            "salary": 6800.5,
+            "department": "DevOps",
+            "skills": [
+                "Docker",
+                "Kubernetes",
+                "Linux"
+            ],
+            "address": {
+                "city": "Bukhara",
+                "country": "Uzbekistan",
+                "zipCode": "200100"
+            }
+        }
+    ]
+}
+

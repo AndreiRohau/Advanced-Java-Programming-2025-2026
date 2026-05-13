@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<employees>
+    <employee id="101">
+        <firstName>Andrei</firstName>
+        <lastName>Rohau</lastName>
+        <active>true</active>
+        <salary>8500.75</salary>
+        <department><![CDATA[Engineering]]></department>
+        <skills>
+            <skill>Java</skill>
+            <skill>Spring</skill>
+            <skill>SQL</skill>
+        </skills>
+        <address>
+            <city>Tashkent</city>
+            <country>Uzbekistan</country>
+            <zipCode>100000</zipCode>
+        </address>
+    </employee>
+
+    <employee id="102">
+        <firstName>Aziza</firstName>
+        <lastName>Karimova</lastName>
+        <active>true</active>
+        <salary>7200.0</salary>
+        <department><![CDATA[Qa]]></department>
+        <skills>
+            <skill>JUnit</skill>
+            <skill>Selenium</skill>
+            <skill>Postman</skill>
+        </skills>
+        <address>
+            <city>Samarkand</city>
+            <country>Uzbekistan</country>
+            <zipCode>140100</zipCode>
+        </address>
+    </employee>
+
+    <employee id="103">
+        <firstName>Bekzod</firstName>
+        <lastName>Rasulov</lastName>
+        <active>false</active>
+        <salary>6800.5</salary>
+        <department><![CDATA[DevOps]]></department>
+        <skills>
+            <skill>Docker</skill>
+            <skill>Kubernetes</skill>
+            <skill>Linux</skill>
+        </skills>
+        <address>
+            <city>Bukhara</city>
+            <country>Uzbekistan</country>
+            <zipCode>200100</zipCode>
+        </address>
+    </employee>
+</employees>
+

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<emp:employees
+    xmlns:emp="http://itpu.uz/employee-ns"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://itpu.uz/employee-ns employee-example-ns.xsd">
+    <emp:employee id="101">
+        <emp:firstName>Andrei</emp:firstName>
+        <emp:lastName>Rohau</emp:lastName>
+        <emp:active>true</emp:active>
+        <emp:salary>8500.75</emp:salary>
+        <emp:department><![CDATA[Engineering]]></emp:department>
+        <emp:skills>
+            <emp:skill>Java</emp:skill>
+            <emp:skill>Spring</emp:skill>
+            <emp:skill>SQL</emp:skill>
+        </emp:skills>
+        <emp:address>
+            <emp:city>Tashkent</emp:city>
+            <emp:country>Uzbekistan</emp:country>
+            <emp:zipCode>100000</emp:zipCode>
+        </emp:address>
+    </emp:employee>
+
+    <emp:employee id="102">
+        <emp:firstName>Aziza</emp:firstName>
+        <emp:lastName>Karimova</emp:lastName>
+        <emp:active>true</emp:active>
+        <emp:salary>7200.0</emp:salary>
+        <emp:department><![CDATA[Qa]]></emp:department>
+        <emp:skills>
+            <emp:skill>JUnit</emp:skill>
+            <emp:skill>Selenium</emp:skill>
+            <emp:skill>Postman</emp:skill>
+        </emp:skills>
+        <emp:address>
+            <emp:city>Samarkand</emp:city>
+            <emp:country>Uzbekistan</emp:country>
+            <emp:zipCode>140100</emp:zipCode>
+        </emp:address>
+    </emp:employee>
+
+    <emp:employee id="103">
+        <emp:firstName>Bekzod</emp:firstName>
+        <emp:lastName>Rasulov</emp:lastName>
+        <emp:active>false</emp:active>
+        <emp:salary>6800.5</emp:salary>
+        <emp:department><![CDATA[DevOps]]></emp:department>
+        <emp:skills>
+            <emp:skill>Docker</emp:skill>
+            <emp:skill>Kubernetes</emp:skill>
+            <emp:skill>Linux</emp:skill>
+        </emp:skills>
+        <emp:address>
+            <emp:city>Bukhara</emp:city>
+            <emp:country>Uzbekistan</emp:country>
+            <emp:zipCode>200100</emp:zipCode>
+        </emp:address>
+    </emp:employee>
+</emp:employees>
+
