@@ -1,7 +1,7 @@
 # Advanced-Java-Programming-2025-2026
 
 - [repo](https://github.com/AndreiRohau/Advanced-Java-Programming-2025-2026)
-- presentations' location: [Mentimeter / My presentations / BS_S4_Advanced_Java_Programming](https://www.mentimeter.com/app/folder/2902141)
+- presentations' location: [Mentimeter / My presentations / BS_S4_Advanced_Java_Programming](https://www.mentimeter.com/app/workspace/folder/2933339)
 
 Course:
 #### Build Tools. Maven | ws-2 | ws-4
